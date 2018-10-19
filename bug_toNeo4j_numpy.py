@@ -39,7 +39,7 @@ def main():
     repo = g.get_repo(repo_name)
     graph = Graph("http://127.0.0.1:7474", username = 'neo4j', password = 'password')
     matcher = NodeMatcher(graph)
-    nodes = list(matcher.match('Issue', html_url__contains = repo_name))
+    nodes = list(matcher.match('Issue', html_url__contains = repo_name).order_by("_number"))
 
     k = 0
     '''

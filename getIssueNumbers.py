@@ -1,11 +1,19 @@
 import csv
 from github import Github, GithubException
+import socket
 
 def getIssueNumbers(repo_name):
     numbers = []
-    g = Github('username', 'password')
+    g = Github('zhhcrawler1', 'z1833089', timeout = 100)
     repo = g.get_repo(repo_name)
-    issues = repo.get_issues()
+    ok = False
+    while not ok:
+        try:
+            issues = repo.get_issues()
+            ok = True
+        except socket.timeout:
+            ok = False
+    
     for issue in issues:
         numbers.append(issue.number)
         print(issue.number)
@@ -18,11 +26,11 @@ def writeToCSV(numbers, path):
         w.writerow([number])
         
 def main():
-    repo_name = 'matplotlib/matplotlib'
+    repo_name = 'tensorflow/tensorflow'
     numbers = getIssueNumbers(repo_name)
     
-    path = 'filepath'
+    path = 'E://research/KG/tensorflow/issueNumbers.csv'
     writeToCSV(numbers, path)
-    
+
 if __name__ == "__main__":
     main()
